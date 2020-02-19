@@ -1,7 +1,31 @@
 import React, {Component} from 'react';
+import axios from "axios";
+import {latestBlog} from "../store/constants";
 
 class RightBar extends Component {
+
+    state = {
+        latestBlogs: []
+    };
+
+    componentDidMount() {
+        this.latestBlog()
+    }
+
+    latestBlog() {
+        axios.get(latestBlog)
+            .then(res => {
+                console.log(res.data)
+                this.setState({latestBlogs: res.data})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     render() {
+        const {latestBlogs} = this.state;
+
         return (
             <aside className="col-lg-4">
                 <div className="widget search">
@@ -21,38 +45,23 @@ class RightBar extends Component {
                         <h3 className="h6">Latest Posts</h3>
                     </header>
                     <div className="blog-posts"><a href="#">
-                        <div className="item d-flex align-items-center">
-                            <div className="image"><img src="/img/small-thumbnail-1.jpg" alt="..."
-                                                        className="img-fluid"/></div>
-                            <div className="title"><strong>Alberto Savoia Can Teach You About</strong>
-                                <div className="d-flex align-items-center">
-                                    <div className="views"><i className="icon-eye"></i> 500</div>
-                                    <div className="comments"><i className="icon-comment"></i>12</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a><a href="#">
-                        <div className="item d-flex align-items-center">
-                            <div className="image"><img src="/img/small-thumbnail-2.jpg" alt="..."
-                                                        className="img-fluid"/></div>
-                            <div className="title"><strong>Alberto Savoia Can Teach You About</strong>
-                                <div className="d-flex align-items-center">
-                                    <div className="views"><i className="icon-eye"></i> 500</div>
-                                    <div className="comments"><i className="icon-comment"></i>12</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a><a href="#">
-                        <div className="item d-flex align-items-center">
-                            <div className="image"><img src="/img/small-thumbnail-3.jpg" alt="..."
-                                                        className="img-fluid"/></div>
-                            <div className="title"><strong>Alberto Savoia Can Teach You About</strong>
-                                <div className="d-flex align-items-center">
-                                    <div className="views"><i className="icon-eye"></i> 500</div>
-                                    <div className="comments"><i className="icon-comment"></i>12</div>
-                                </div>
-                            </div>
-                        </div>
+                        {
+                            latestBlogs.map(blog => {
+                                return (
+                                    <div className="item d-flex align-items-center">
+                                        <div className="image"><img src={blog.thumbnail} alt="..."
+                                                                    className="img-fluid"/></div>
+                                        <div className="title"><strong>{blog.title}</strong>
+                                            <div className="d-flex align-items-center">
+                                                <div className="views"><i className="icon-eye"></i> {blog.view_count}</div>
+                                                <div className="comments"><i className="icon-comment"></i>{blog.comment_count}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+
                     </a></div>
                 </div>
                 <div className="widget categories">

@@ -1,114 +1,82 @@
 import React , {Component} from 'react';
 import RightBar from "./RightBar";
+import axios from 'axios';
+import {postsFetch} from "../store/constants";
+import {Link} from "react-router-dom";
 
 class Blog extends Component {
+    state ={
+        posts: []
+    }
+
+    componentDidMount() {
+        this.fetchPosts()
+    }
+
+    fetchPosts(){
+        axios.get(postsFetch(1))
+            .then(res => {
+                console.log(res.data.data)
+                this.setState({posts: res.data.data})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     render() {
+        const {posts} = this.state;
         return (
             <div className="container">
                 <div className="row">
                     <main className="posts-listing col-lg-8">
                         <div className="container">
                             <div className="row">
-                                <div className="post col-xl-6">
-                                    <div className="post-thumbnail"><a href="post.html"><img src="img/blog-post-1.jpeg"
+
+                                {
+                                    posts.map(post => {
+                                        return (
+                                            <div className="post col-xl-6">
+                                    <div className="post-thumbnail">
+                                        <Link to={`/post/${post.id}`}><img src={`http://127.0.0.1:8000${post.thumbnail}`}
                                                                                              alt="..."
-                                                                                             className="img-fluid" /></a>
+                                                                                             className="img-fluid" />
+                                        </Link>
                                     </div>
                                     <div className="post-details">
                                         <div className="post-meta d-flex justify-content-between">
                                             <div className="date meta-last">20 May | 2016</div>
-                                            <div className="category"><a href="#">Business</a></div>
+
+                                            <div className="category">
+                                                {
+                                                    post.categories.map(category => {
+                                                        return (
+                                                             <a href="#">{category.title}</a>
+                                                        )
+                                                    })
+                                                }
+
+                                            </div>
                                         </div>
                                         <a href="post.html">
-                                            <h3 className="h4">Alberto Savoia Can Teach You About Interior</h3></a>
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                            elit, sed do eiusmod tempor incididunt ut labore.</p>
+                                            <h3 className="h4">{post.title}</h3></a>
+                                        <p className="text-muted">{post.overview}</p>
                                         <footer className="post-footer d-flex align-items-center"><a href="#"
                                                                                                      className="author d-flex align-items-center flex-wrap">
-                                            <div className="avatar"><img src="img/avatar-3.jpg" alt="..."
+                                            <div className="avatar"><img src={`http://127.0.0.1:8000/media/${post.user_profile}`} alt="..."
                                                                          className="img-fluid" /></div>
-                                            <div className="title"><span>John Doe</span></div>
+                                            <div className="title"><span>{post.author}</span></div>
                                         </a>
-                                            <div className="date"><i className="icon-clock"></i> 2 months ago</div>
-                                            <div className="comments meta-last"><i className="icon-comment"></i>12</div>
+                                            <div className="date"><i className="icon-clock"></i> {post.timestamp}</div>
+                                            <div className="comments meta-last"><i className="icon-comment"></i>{post.comment_count}</div>
                                         </footer>
                                     </div>
                                 </div>
-                                <div className="post col-xl-6">
-                                    <div className="post-thumbnail"><a href="post.html"><img src="img/blog-post-2.jpg"
-                                                                                             alt="..."
-                                                                                             className="img-fluid" /></a>
-                                    </div>
-                                    <div className="post-details">
-                                        <div className="post-meta d-flex justify-content-between">
-                                            <div className="date meta-last">20 May | 2016</div>
-                                            <div className="category"><a href="#">Business</a></div>
-                                        </div>
-                                        <a href="post.html">
-                                            <h3 className="h4">Alberto Savoia Can Teach You About Interior</h3></a>
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                            elit, sed do eiusmod tempor incididunt ut labore.</p>
-                                        <div className="post-footer d-flex align-items-center"><a href="#"
-                                                                                                  className="author d-flex align-items-center flex-wrap">
-                                            <div className="avatar"><img src="img/avatar-2.jpg" alt="..."
-                                                                         className="img-fluid" /></div>
-                                            <div className="title"><span>John Doe</span></div>
-                                        </a>
-                                            <div className="date"><i className="icon-clock"></i> 2 months ago</div>
-                                            <div className="comments meta-last"><i className="icon-comment"></i>12</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="post col-xl-6">
-                                    <div className="post-thumbnail"><a href="post.html"><img src="img/blog-post-3.jpeg"
-                                                                                             alt="..."
-                                                                                             className="img-fluid" /></a>
-                                    </div>
-                                    <div className="post-details">
-                                        <div className="post-meta d-flex justify-content-between">
-                                            <div className="date meta-last">20 May | 2016</div>
-                                            <div className="category"><a href="#">Business</a></div>
-                                        </div>
-                                        <a href="post.html">
-                                            <h3 className="h4">Alberto Savoia Can Teach You About Interior</h3></a>
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                            elit, sed do eiusmod tempor incididunt ut labore.</p>
-                                        <div className="post-footer d-flex align-items-center"><a href="#"
-                                                                                                  className="author d-flex align-items-center flex-wrap">
-                                            <div className="avatar"><img src="img/avatar-3.jpg" alt="..."
-                                                                         className="img-fluid" /></div>
-                                            <div className="title"><span>John Doe</span></div>
-                                        </a>
-                                            <div className="date"><i className="icon-clock"></i> 2 months ago</div>
-                                            <div className="comments meta-last"><i className="icon-comment"></i>12</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="post col-xl-6">
-                                    <div className="post-thumbnail"><a href="post.html"><img src="img/blog-post-4.jpeg"
-                                                                                             alt="..."
-                                                                                             className="img-fluid" /></a>
-                                    </div>
-                                    <div className="post-details">
-                                        <div className="post-meta d-flex justify-content-between">
-                                            <div className="date meta-last">20 May | 2016</div>
-                                            <div className="category"><a href="#">Business</a></div>
-                                        </div>
-                                        <a href="post.html">
-                                            <h3 className="h4">Alberto Savoia Can Teach You About Interior</h3></a>
-                                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                            elit, sed do eiusmod tempor incididunt ut labore.</p>
-                                        <div className="post-footer d-flex align-items-center"><a href="#"
-                                                                                                  className="author d-flex align-items-center flex-wrap">
-                                            <div className="avatar"><img src="img/avatar-1.jpg" alt="..."
-                                                                         className="img-fluid" /></div>
-                                            <div className="title"><span>John Doe</span></div>
-                                        </a>
-                                            <div className="date"><i className="icon-clock"></i> 2 months ago</div>
-                                            <div className="comments meta-last"><i className="icon-comment"></i>12</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        )
+                                    })
+                                }
+
+
                             </div>
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination pagination-template d-flex justify-content-center">

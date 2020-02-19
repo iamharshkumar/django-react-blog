@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'id', 'title', 'overview', 'timestamp',
-            'comment_count', 'author', 'thumbnail',
+            'comment_count', 'view_count', 'author', 'thumbnail',
             'categories', 'featured', 'user_profile')
 
     def get_author(self, obj):
